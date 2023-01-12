@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Frontend",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}/frontend",
+            "runtimeExecutable": "/usr/local/bin/chromium",
+            "runtimeArgs": [
+              "--new-window",
+              "-user-data-dir=${workspaceFolder}/dev-profile",
+              "--remote-debugging-port=9222",
+              "--disable-background-networking"
+            ]
+          }
+    ]
+}
