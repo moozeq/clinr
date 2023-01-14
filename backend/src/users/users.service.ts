@@ -20,13 +20,23 @@ export class UsersService {
     return User.findAll();
   }
 
-  findOne(id: number): Promise<User> {
+  findOne(id: number): Promise<User | undefined> {
     return User.findOne({
       where: { id: id }
     });
   }
 
+  findByUsername(username: string): Promise<User | undefined> {
+    return User.findOne({
+      where: { username: username }
+    });
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
+    if (updateUserDto.password !== undefined) {
+      updateUserDto.password = this.hashPassword(updateUserDto.password);
+    }
+    
     return User.update(updateUserDto, {
       where: { id: id }
     });

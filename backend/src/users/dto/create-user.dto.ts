@@ -1,15 +1,16 @@
-import { Exclude } from "class-transformer";
 import { IsEmail, IsNotEmpty, Length} from "class-validator";
 
 export class CreateUserDto {
-    @IsEmail()
-    login: string;
+    @Length(1, 31)
+    username: string;
 
-    @IsNotEmpty()
     @Length(8, 31)
     password: string;
 
-    @IsNotEmpty()
+    @IsEmail()
+    @Length(3, 255)
+    email: string;
+
     @Length(1, 63)
     name: string;
 }
