@@ -2,8 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseIntercept
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { classToPlain, instanceToPlain } from 'class-transformer';
-import { User } from './entities/user.entity';
 import { ResponseUserDto } from './dto/response-user.dto';
 
 @Controller('users')
@@ -14,19 +12,19 @@ export class UsersController {
   @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() createUserDto: CreateUserDto): Promise<ResponseUserDto> {
     const newUser = await this.usersService.create(createUserDto);
-    return new ResponseUserDto(newUser);
+    return newUser as ResponseUserDto;
   }
 
   @Get()
   async findAll(): Promise<ResponseUserDto[]> {
     const newUsers = await this.usersService.findAll();
-    return newUsers.map(newUser => new ResponseUserDto(newUser));
+    return newUsers.map(newUser => newUser as ResponseUserDto);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<object> {
     const user = await this.usersService.findOne(+id);
-    return new ResponseUserDto(user);
+    return user as ResponseUserDto;
   }
 
   @Patch(':id')

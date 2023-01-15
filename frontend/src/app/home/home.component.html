@@ -1,0 +1,9 @@
+<div class="container home-container d-flex flex-column align-items-center">
+    <h1 class="mb-3 text-primary">
+        Clin-R
+    </h1>
+    <div class="form-floating mb-3 w-25 text-center">
+        <p>You are logged in as {{ user.name }}</p>
+    </div>
+    <button class="btn btn-primary form-floating mb-3 w-25" (click)="signOut()">Sign out</button>
+</div>
