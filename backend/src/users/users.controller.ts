@@ -12,19 +12,19 @@ export class UsersController {
   @UseInterceptors(ClassSerializerInterceptor)
   async create(@Body() createUserDto: CreateUserDto): Promise<ResponseUserDto> {
     const newUser = await this.usersService.create(createUserDto);
-    return newUser as ResponseUserDto;
+    return new ResponseUserDto(newUser);
   }
 
   @Get()
   async findAll(): Promise<ResponseUserDto[]> {
     const newUsers = await this.usersService.findAll();
-    return newUsers.map(newUser => newUser as ResponseUserDto);
+    return newUsers.map(newUser => new ResponseUserDto(newUser));
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<object> {
     const user = await this.usersService.findOne(+id);
-    return user as ResponseUserDto;
+    return new ResponseUserDto(user);
   }
 
   @Patch(':id')

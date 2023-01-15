@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoggedUserDto } from './dto/user.dto';
+import { LoggedUser, LoggedUserDto } from './dto/user.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,14 +22,14 @@ export class TokenStorageService {
     return window.sessionStorage.getItem(this.authTokenKey);
   }
 
-  saveUser(user: LoggedUserDto): void {
+  saveUser(user: LoggedUser): void {
     window.sessionStorage.setItem(this.authUserKey, JSON.stringify(user));
   }
 
-  getUser(): LoggedUserDto | null {
+  getUser(): LoggedUser | null {
     const user = window.sessionStorage.getItem(this.authUserKey);
     if (user) {
-      return JSON.parse(user) as LoggedUserDto;
+      return new LoggedUser(JSON.parse(user) as LoggedUserDto);
     }
     return null;
   }

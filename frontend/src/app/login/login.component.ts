@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { LoggedUserDto, LoginUserDto } from '../dto/user.dto';
+import { LoggedUser, LoggedUserDto, LoginUser, LoginUserDto } from '../dto/user.dto';
 import { TokenStorageService } from '../token-storage.service';
 import { Toast } from 'bootstrap';
 import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
@@ -27,14 +27,14 @@ export class LoginComponent {
   constructor(private fb: FormBuilder, private authService: AuthService, private tokenStorage: TokenStorageService) { }
 
   login(): void {
-    const loginUser = this.userForm.value as LoginUserDto;
+    const loginUser = new LoginUser(this.userForm.value as LoginUserDto);
     if (!loginUser.username || !loginUser.password) {
       throw new Error('Empty username or password is not allowed!');
     }
     this.authService.login(loginUser.username, loginUser.password).subscribe({
       next: (data) => {
         this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUser(data.user as LoggedUserDto);
+        this.tokenStorage.saveUser(new LoggedUser(data.user as LoggedUserDto));
 
         this.isLoggedIn = true;
         this.isLoginFailed = false;
