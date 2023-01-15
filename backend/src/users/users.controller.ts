@@ -2,8 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseIntercept
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { classToPlain, instanceToPlain } from 'class-transformer';
-import { User } from './entities/user.entity';
 import { ResponseUserDto } from './dto/response-user.dto';
 
 @Controller('users')

@@ -1,0 +1,4 @@
+<app-login *ngIf="!isLoggedIn; else home"></app-login>
+<ng-template #home>
+    <app-home [user]="user"></app-home>
+</ng-template>

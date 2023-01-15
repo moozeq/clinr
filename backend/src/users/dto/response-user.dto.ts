@@ -7,5 +7,6 @@ export class ResponseUserDto extends PickType(CreateUserDto, ['username', 'name'
         super(user);
         this.username = user.username;
         this.name = user.name;
+        this.email = user.email;
     }
 }
