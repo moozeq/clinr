@@ -1,5 +1,5 @@
 import { IsArray, IsUUID, Length } from "class-validator";
-import { ResponseUserDto } from "src/users/dto/response-user.dto";
+import { ResponseBasicUserDto } from "src/users/dto/response-basic-user.dto";
 import { Role } from "../entities/role.entity";
 
 export class ResponseRoleDto {
@@ -10,16 +10,16 @@ export class ResponseRoleDto {
     name: string;
 
     @IsArray()
-    users: ResponseUserDto[];
+    users: ResponseBasicUserDto[];
 
-    constructor(uuid: string, name: string, users: ResponseUserDto[]) {
+    constructor(uuid: string, name: string, users: ResponseBasicUserDto[]) {
         this.uuid = uuid;
         this.name = name;
         this.users = users;
     }
 
     static fromRole(role: Role): ResponseRoleDto {
-        const users = role.users?.map(user => ResponseUserDto.fromUser(user)) || [];
+        const users = role.users?.map(user => ResponseBasicUserDto.fromUser(user)) || [];
         return new ResponseRoleDto(role.uuid, role.name, users);
     }
 }

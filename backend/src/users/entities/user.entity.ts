@@ -1,6 +1,9 @@
 import { UUIDV4 } from "sequelize";
 import { Model, Column, Table, Unique, IsEmail, IsUUID, Length, DeletedAt, CreatedAt, UpdatedAt, PrimaryKey, Default, AutoIncrement, Index, HasMany, BelongsToMany } from "sequelize-typescript";
-import { Role, UserRole } from "src/roles/entities/role.entity";
+import { Facility } from "src/facilities/entities/facility.entity";
+import { UserFacility } from "src/facilities/entities/user-facility.entity";
+import { UserRole } from "src/roles/entities/role-user.entity";
+import { Role } from "src/roles/entities/role.entity";
 
 @Table
 export class User extends Model<User> {
@@ -34,6 +37,9 @@ export class User extends Model<User> {
 
     @BelongsToMany(() => Role, { as: 'roles', through: () => UserRole })
     roles: Role[];
+
+    @BelongsToMany(() => Facility, { as: 'facilities', through: () => UserFacility })
+    facilities: Facility[];
 
     @CreatedAt
     createdAt: Date;

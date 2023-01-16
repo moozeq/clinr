@@ -1,6 +1,7 @@
 import { UUIDV4 } from "sequelize";
 import { BelongsToMany, Column, Default, ForeignKey, Index, IsUUID, Length, Model, Table, Unique } from "sequelize-typescript";
 import { User } from "src/users/entities/user.entity";
+import { UserRole } from "./role-user.entity";
 
 @Table
 export class Role extends Model<Role> {
@@ -18,15 +19,4 @@ export class Role extends Model<Role> {
 
     @BelongsToMany(() => User, { as: 'users', through: () => UserRole })
     users: User[];
-}
-
-@Table
-export class UserRole extends Model<UserRole> {
-    @ForeignKey(() => User)
-    @Column
-    userId: number;
-
-    @ForeignKey(() => Role)
-    @Column
-    roleId: number
 }

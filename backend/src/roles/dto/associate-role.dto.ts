@@ -1,4 +1,4 @@
-import { IsUUID, Length } from "class-validator";
+import { IsUUID } from "class-validator";
 
 export class AssociateRoleDto {
     @IsUUID()

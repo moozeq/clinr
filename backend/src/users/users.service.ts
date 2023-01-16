@@ -3,6 +3,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import bcrypt from "bcrypt";
+import { Facility } from 'src/facilities/entities/facility.entity';
+import { Role } from 'src/roles/entities/role.entity';
 
 @Injectable()
 export class UsersService {
@@ -17,18 +19,20 @@ export class UsersService {
   }
 
   findAll(): Promise<User[]> {
-    return User.findAll({ include: 'roles' });
+    return User.findAll({ include: [Role, Facility] });
   }
 
   findOne(uuid: string): Promise<User | undefined> {
     return User.findOne({
-      where: { uuid: uuid }
+      where: { uuid: uuid },
+      include: [Role, Facility]
     });
   }
 
   findByUsername(username: string): Promise<User | undefined> {
     return User.findOne({
-      where: { username: username }
+      where: { username: username },
+      include: [Role, Facility]
     });
   }
 
