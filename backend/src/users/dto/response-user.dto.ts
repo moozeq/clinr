@@ -18,7 +18,6 @@ export class ResponseUserDto extends ResponseBasicUserDto {
     static fromUser(user: User): ResponseUserDto {
         const roles = user.roles?.map(role => role.name) || [];
         const facilities = user.facilities?.map(facility => facility.name) || [];
-        console.log(facilities);
         return new ResponseUserDto(user.uuid, user.username, user.email, user.name, roles, facilities);
     }
 }
