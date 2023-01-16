@@ -1,10 +1,16 @@
 import { UUIDV4 } from "sequelize";
-import { Model, Column, Table, Unique, IsEmail, IsUUID, Length, DeletedAt, CreatedAt, UpdatedAt, PrimaryKey, Default, AutoIncrement, Index, HasMany, BelongsToMany } from "sequelize-typescript";
+import { Model, Column, Table, Unique, IsEmail, IsUUID, Length, DeletedAt, CreatedAt, UpdatedAt, PrimaryKey, Default, AutoIncrement, Index, HasMany, BelongsToMany, Scopes } from "sequelize-typescript";
 import { Facility } from "src/facilities/entities/facility.entity";
 import { UserFacility } from "src/facilities/entities/user-facility.entity";
 import { UserRole } from "src/roles/entities/role-user.entity";
 import { Role } from "src/roles/entities/role.entity";
+import { SeqScope } from "src/utils";
 
+@Scopes(() => ({
+    [SeqScope.Full]: {
+        include: [Role, Facility],
+    }
+}))
 @Table
 export class User extends Model<User> {
     @IsUUID(4)
@@ -12,41 +18,41 @@ export class User extends Model<User> {
     @Index
     @Default(UUIDV4)
     @Column('VARCHAR(36)')
-    uuid: string;
+    readonly uuid!: string;
 
     @Unique
     @Index
     @Length({ min: 1, max: 31 })
     @Column('VARCHAR(32)')
-    username: string;
+    readonly username!: string;
 
     @Length({ min: 60, max: 60 })
     @Column('VARCHAR(60)')
-    password: string;
+    password!: string;
 
     @IsEmail
     @Unique
     @Index
     @Length({ min: 3, max: 255 })
     @Column('VARCHAR(255)')
-    email: string;
+    email!: string;
 
     @Length({ min: 1, max: 63 })
     @Column('VARCHAR(63)')
-    name: string;
+    name!: string;
 
-    @BelongsToMany(() => Role, { as: 'roles', through: () => UserRole })
-    roles: Role[];
+    @BelongsToMany(() => Role, () => UserRole)
+    roles?: Role[];
 
-    @BelongsToMany(() => Facility, { as: 'facilities', through: () => UserFacility })
-    facilities: Facility[];
+    @BelongsToMany(() => Facility, () => UserFacility)
+    facilities?: Facility[];
 
     @CreatedAt
-    createdAt: Date;
+    readonly createdAt!: Date;
 
     @UpdatedAt
-    updatedAt: Date;
+    readonly updatedAt!: Date;
 
     @DeletedAt
-    archiveDate: Date;
+    readonly archiveDate!: Date;
 }

@@ -3,8 +3,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import bcrypt from "bcrypt";
-import { Facility } from 'src/facilities/entities/facility.entity';
-import { Role } from 'src/roles/entities/role.entity';
+import { SeqScope } from 'src/utils';
 
 @Injectable()
 export class UsersService {
@@ -18,21 +17,19 @@ export class UsersService {
     return User.create(createUserDto);
   }
 
-  findAll(): Promise<User[]> {
-    return User.findAll({ include: [Role, Facility] });
+  findAll(scope: SeqScope = SeqScope.Basic): Promise<User[]> {
+    return User.scope(scope).findAll();
   }
 
-  findOne(uuid: string): Promise<User | undefined> {
-    return User.findOne({
-      where: { uuid: uuid },
-      include: [Role, Facility]
+  findOne(uuid: string, scope: SeqScope = SeqScope.Basic): Promise<User | undefined> {
+    return User.scope(scope).findOne({
+      where: { uuid: uuid }
     });
   }
 
-  findByUsername(username: string): Promise<User | undefined> {
-    return User.findOne({
-      where: { username: username },
-      include: [Role, Facility]
+  findByUsername(username: string, scope: SeqScope = SeqScope.Basic): Promise<User | undefined> {
+    return User.scope(scope).findOne({
+      where: { username: username }
     });
   }
 
