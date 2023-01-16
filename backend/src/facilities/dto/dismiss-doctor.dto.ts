@@ -1,9 +1,9 @@
 import { IsUUID } from "class-validator";
 
-export class DissolveRoleDto {
+export class DismissDoctorDto {
     @IsUUID()
     userUuid: string;
     
     @IsUUID()
-    roleUuid: string;
+    facilityUuid: string;
 }
