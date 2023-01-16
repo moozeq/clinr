@@ -12,23 +12,24 @@ export class RolesService {
     return Role.create(createRoleDto);
   }
 
-  async findAll(): Promise<Role[]> {
-    return Role.findAll();
+  async findAll(includeUsers: boolean = false): Promise<Role[]> {
+    const includeOptions = includeUsers ? [User] : [];
+    return Role.findAll({ include: includeOptions });
   }
 
-  async findAllWithUsers(): Promise<Role[]> {
-    return Role.findAll({ include: [User] });
-  }
-
-  findOne(uuid: string) {
+  findOne(uuid: string, includeUsers: boolean = false) {
+    const includeOptions = includeUsers ? [User] : [];
     return Role.findOne({
-      where: { uuid: uuid }
+      where: { uuid: uuid },
+      include: includeOptions
     });
   }
 
-  findByName(name: string): Promise<Role | undefined> {
+  findByName(name: string, includeUsers: boolean = false): Promise<Role | undefined> {
+    const includeOptions = includeUsers ? [User] : [];
     return Role.findOne({
-      where: { name: name }
+      where: { name: name },
+      include: includeOptions
     });
   }
 

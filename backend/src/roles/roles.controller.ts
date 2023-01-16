@@ -19,17 +19,18 @@ export class RolesController {
   }
 
   @Get()
-  async findAll(@Query('users') withUsers: boolean) {
-    const findFn = withUsers
-      ? this.rolesService.findAllWithUsers
-      : this.rolesService.findAll;
-    return findFn().then((roles) => {
-      return roles.map(role => ResponseRoleDto.fromRole(role));
-    });
+  async find(@Query('name') name: string, @Query('includeUsers') includeUsers: boolean) {
+    if (name) {
+      return this.rolesService.findByName(name, includeUsers)
+        .then((role) => ResponseRoleDto.fromRole(role));
+    } else {
+      return this.rolesService.findAll(includeUsers)
+        .then((roles) => roles.map(role => ResponseRoleDto.fromRole(role)));
+    }
   }
 
   @Get(':uuid')
-  async findOne(@Param('uuid') uuid: string) {
-    return this.rolesService.findOne(uuid).then((role) => ResponseRoleDto.fromRole(role));
+  async findOne(@Param('uuid') uuid: string, @Query('includeUsers') includeUsers: boolean) {
+    return this.rolesService.findOne(uuid, includeUsers).then((role) => ResponseRoleDto.fromRole(role));
   }
 }
