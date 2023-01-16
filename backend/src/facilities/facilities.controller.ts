@@ -13,7 +13,7 @@ export class FacilitiesController {
     return this.facilitiesService.assignDoctor(assignDoctor);
   }
 
-  @Post('dissmiss')
+  @Post('dismiss')
   dissolve(@Body() dismissDoctor: DismissDoctorDto) {
     return this.facilitiesService.dismissDoctor(dismissDoctor);
   }
