@@ -1,6 +1,4 @@
-import { Length } from "class-validator";
+import { CreateResourceDto } from "src/resource/dto/create-resource.dto";
 
-export class CreateRoleDto {
-    @Length(1, 31)
-    name: string;
+export class CreateRoleDto extends CreateResourceDto {
 }

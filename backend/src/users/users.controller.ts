@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Inject, UseInterceptors, ClassSerializerInterceptor, ValidationPipe, UsePipes, HttpCode, NotFoundException } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { ResponseUserDto } from './dto/response-user.dto';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, Patch, Post, UseInterceptors } from '@nestjs/common';
 import { SeqScope } from 'src/utils';
+import { CreateUserDto } from './dto/create-user.dto';
+import { ResponseUserDto } from './dto/response-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {

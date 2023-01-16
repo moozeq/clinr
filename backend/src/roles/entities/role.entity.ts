@@ -1,5 +1,6 @@
-import { UUIDV4 } from "sequelize";
-import { BelongsToMany, Column, CreatedAt, Default, DeletedAt, Index, IsUUID, Length, Model, Scopes, Table, Unique, UpdatedAt } from "sequelize-typescript";
+import { BelongsToMany, Scopes, Table } from "sequelize-typescript";
+import { Resource } from "src/resource/entities/resource.entity";
+import { getTableResourceOptions } from "src/resource/resource.utils";
 import { User } from "src/users/entities/user.entity";
 import { SeqScope } from "src/utils";
 import { UserRole } from "./role-user.entity";
@@ -9,29 +10,8 @@ import { UserRole } from "./role-user.entity";
         include: [User],
     }
 }))
-@Table
-export class Role extends Model<Role> {
-    @IsUUID(4)
-    @Unique
-    @Index
-    @Default(UUIDV4)
-    @Column('VARCHAR(36)')
-    readonly uuid!: string;
-    
-    @Unique
-    @Length({ min: 1, max: 63 })
-    @Column('VARCHAR(63)')
-    name!: string;
-
+@Table(getTableResourceOptions('roles'))
+export class Role extends Resource<Role> {
     @BelongsToMany(() => User, () => UserRole)
     users?: User[];
-
-    @CreatedAt
-    readonly createdAt!: Date;
-
-    @UpdatedAt
-    readonly updatedAt!: Date;
-
-    @DeletedAt
-    readonly archiveDate!: Date;
 }

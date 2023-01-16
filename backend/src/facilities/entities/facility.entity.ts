@@ -1,5 +1,6 @@
-import { UUIDV4 } from "sequelize";
-import { Column, CreatedAt, Default, Index, IsEmail, IsUUID, Length, Table, Unique, UpdatedAt, DeletedAt, BelongsToMany, Model, AllowNull, Scopes } from "sequelize-typescript";
+import { AllowNull, BelongsToMany, Column, IsEmail, Length, Scopes, Table } from "sequelize-typescript";
+import { Resource } from "src/resource/entities/resource.entity";
+import { getTableResourceOptions } from "src/resource/resource.utils";
 import { User } from "src/users/entities/user.entity";
 import { SeqScope } from "src/utils";
 import { UserFacility } from "./user-facility.entity";
@@ -9,25 +10,8 @@ import { UserFacility } from "./user-facility.entity";
         include: [User],
     }
 }))
-@Table
-export class Facility extends Model<Facility> {
-    @IsUUID(4)
-    @Unique
-    @Index
-    @Default(UUIDV4)
-    @Column('VARCHAR(36)')
-    readonly uuid!: string;
-
-    @Length({ min: 1, max: 255 })
-    @Unique
-    @Index
-    @Column('VARCHAR(255)')
-    name!: string;
-
-    @Length({ max: 1023 })
-    @Column('VARCHAR(1023)')
-    description?: string;
-
+@Table(getTableResourceOptions('facilities'))
+export class Facility extends Resource<Facility> {
     @Length({ min: 1, max: 255 })
     @Column('VARCHAR(255)')
     address!: string;
@@ -45,13 +29,4 @@ export class Facility extends Model<Facility> {
 
     @BelongsToMany(() => User, () => UserFacility)
     doctors?: User[];
-
-    @CreatedAt
-    readonly createdAt!: Date;
-
-    @UpdatedAt
-    readonly updatedAt!: Date;
-
-    @DeletedAt
-    readonly archiveDate!: Date;
 }

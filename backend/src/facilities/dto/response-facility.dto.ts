@@ -1,19 +1,11 @@
-import { IsArray, IsOptional, IsUUID, Length } from "class-validator";
+import { IsArray, IsOptional, Length } from "class-validator";
+import { ResourceDto } from "src/resource/dto/resource.dto";
 import { ResponseBasicUserDto } from "src/users/dto/response-basic-user.dto";
 import { Facility } from "../entities/facility.entity";
 
-export class ResponseFacilityDto {
-    @IsUUID()
-    uuid: string;
-    
-    @Length(1, 255)
-    name: string;
-    
-    @Length(0, 1023)
-    description: string;
-    
+export class ResponseFacilityDto extends ResourceDto {
     @Length(1, 1023)
-    address: string;
+    address!: string;
 
     @IsOptional()
     @Length(3, 255)
@@ -24,12 +16,10 @@ export class ResponseFacilityDto {
     telephone?: string;
 
     @IsArray()
-    doctors: ResponseBasicUserDto[];
+    doctors?: ResponseBasicUserDto[];
 
     constructor(uuid: string, name: string, description: string, address: string, email: string, telephone: string, doctors: ResponseBasicUserDto[]) {
-        this.uuid = uuid;
-        this.name = name;
-        this.description = description;
+        super(uuid, name, description);
         this.address = address;
         this.email = email;
         this.telephone = telephone;

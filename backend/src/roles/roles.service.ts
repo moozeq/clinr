@@ -1,13 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { SeqScope } from 'src/utils';
 import { AssociateRoleDto } from './dto/associate-role.dto';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { DissolveRoleDto } from './dto/dissolve-role.dto';
-import { RoleType } from './entities/role-types.entity';
 import { UserRole } from './entities/role-user.entity';
 import { Role } from './entities/role.entity';
+import { RoleType } from './roles.utils';
 
 @Injectable()
 export class RolesService {

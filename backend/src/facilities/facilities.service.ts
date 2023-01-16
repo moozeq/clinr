@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { RoleType } from 'src/roles/entities/role-types.entity';
-import { User } from 'src/users/entities/user.entity';
+import { RoleType } from 'src/roles/roles.utils';
 import { UsersService } from 'src/users/users.service';
 import { SeqScope } from 'src/utils';
 import { AssignDoctorDto } from './dto/assign-doctor.dto';
