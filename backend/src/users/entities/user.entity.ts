@@ -1,6 +1,6 @@
-import { Exclude } from "class-transformer";
 import { UUIDV4 } from "sequelize";
-import { Model, Column, Table, Unique, IsEmail, IsUUID, Length, DeletedAt, CreatedAt, UpdatedAt, PrimaryKey, Default, AutoIncrement, Index } from "sequelize-typescript";
+import { Model, Column, Table, Unique, IsEmail, IsUUID, Length, DeletedAt, CreatedAt, UpdatedAt, PrimaryKey, Default, AutoIncrement, Index, HasMany, BelongsToMany } from "sequelize-typescript";
+import { Role, UserRole } from "src/roles/entities/role.entity";
 
 @Table
 export class User extends Model<User> {
@@ -31,6 +31,9 @@ export class User extends Model<User> {
     @Length({ min: 1, max: 63 })
     @Column('VARCHAR(63)')
     name: string;
+
+    @BelongsToMany(() => Role, { as: 'roles', through: () => UserRole })
+    roles: Role[];
 
     @CreatedAt
     createdAt: Date;

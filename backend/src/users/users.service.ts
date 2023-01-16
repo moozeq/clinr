@@ -11,18 +11,18 @@ export class UsersService {
     return bcrypt.hashSync(password, salt);
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  create(createUserDto: CreateUserDto): Promise<User> {
     createUserDto.password = this.hashPassword(createUserDto.password);
     return User.create(createUserDto);
   }
 
   findAll(): Promise<User[]> {
-    return User.findAll();
+    return User.findAll({ include: 'roles' });
   }
 
-  findOne(id: number): Promise<User | undefined> {
+  findOne(uuid: string): Promise<User | undefined> {
     return User.findOne({
-      where: { id: id }
+      where: { uuid: uuid }
     });
   }
 
@@ -32,19 +32,19 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(uuid: string, updateUserDto: UpdateUserDto) {
     if (updateUserDto.password !== undefined) {
       updateUserDto.password = this.hashPassword(updateUserDto.password);
     }
     
     return User.update(updateUserDto, {
-      where: { id: id }
+      where: { uuid: uuid }
     });
   }
 
-  remove(id: number) {
+  remove(uuid: string) {
     return User.destroy({
-      where: { id: id }
+      where: { uuid: uuid }
     });
   }
 }
