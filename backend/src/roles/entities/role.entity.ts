@@ -11,9 +11,9 @@ export class Role extends Model<Role> {
     @Column('VARCHAR(36)')
     uuid: string;
     
-    @Column
-    @Length({ min: 1, max: 31 })
-    @Column('VARCHAR(32)')
+    @Unique
+    @Length({ min: 1, max: 63 })
+    @Column('VARCHAR(63)')
     name: string;
 
     @BelongsToMany(() => User, { as: 'users', through: () => UserRole })
