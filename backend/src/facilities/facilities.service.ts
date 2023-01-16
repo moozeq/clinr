@@ -1,8 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { RoleType } from 'src/roles/entities/role-types.entity';
-import { Role } from 'src/roles/entities/role.entity';
-import { User } from 'src/users/entities/user.entity';
+import { RoleType } from 'src/roles/roles.utils';
 import { UsersService } from 'src/users/users.service';
+import { SeqScope } from 'src/utils';
 import { AssignDoctorDto } from './dto/assign-doctor.dto';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { DismissDoctorDto } from './dto/dismiss-doctor.dto';
@@ -17,16 +16,13 @@ export class FacilitiesService {
     return Facility.create(createFacilityDto);
   }
 
-  findAll(includeDoctors: boolean = false) {
-    const includeOptions = includeDoctors ? [User] : [];
-    return Facility.findAll({ include: includeOptions });
+  findAll(scope: SeqScope = SeqScope.Basic) {
+    return Facility.scope(scope).findAll();
   }
 
-  findOne(uuid: string, includeDoctors: boolean = false) {
-    const includeOptions = includeDoctors ? [User] : [];
-    return Facility.findOne({
-      where: { uuid: uuid },
-      include: includeOptions
+  findOne(uuid: string, scope: SeqScope = SeqScope.Basic) {
+    return Facility.scope(scope).findOne({
+      where: { uuid: uuid }
     });
   }
 
@@ -39,8 +35,8 @@ export class FacilitiesService {
   async assignDoctor(assignDoctor: AssignDoctorDto): Promise<UserFacility> {
     return Promise.all(
       [
-        this.usersService.findOne(assignDoctor.userUuid),
-        Facility.findOne({ where: { uuid: assignDoctor.facilityUuid } }),
+        this.usersService.findOne(assignDoctor.userUuid, SeqScope.Full),
+        this.findOne(assignDoctor.facilityUuid),
       ]).then(([user, facility]) => {
         if (!user || !facility) {
           throw new NotFoundException('Invalid user or facility!');
@@ -56,7 +52,7 @@ export class FacilitiesService {
     return Promise.all(
       [
         this.usersService.findOne(dismissDoctor.userUuid),
-        Facility.findOne({ where: { uuid: dismissDoctor.facilityUuid } })
+        this.findOne(dismissDoctor.facilityUuid)
       ]).then(([user, facility]) => {
         if (!user || !facility) {
           throw new NotFoundException('Invalid user or facility!');

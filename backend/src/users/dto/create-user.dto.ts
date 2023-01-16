@@ -1,6 +1,7 @@
-import { IsEmail, IsNotEmpty, Length} from "class-validator";
+import { IsEmail, Length } from "class-validator";
+import { CreateResourceDto } from "src/resource/dto/create-resource.dto";
 
-export class CreateUserDto {
+export class CreateUserDto extends CreateResourceDto {
     @Length(1, 31)
     username: string;
 
@@ -10,7 +11,4 @@ export class CreateUserDto {
     @IsEmail()
     @Length(3, 255)
     email: string;
-
-    @Length(1, 63)
-    name: string;
 }

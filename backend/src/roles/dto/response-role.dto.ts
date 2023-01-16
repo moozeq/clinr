@@ -1,25 +1,19 @@
-import { IsArray, IsUUID, Length } from "class-validator";
+import { IsArray } from "class-validator";
+import { ResourceDto } from "src/resource/dto/resource.dto";
 import { ResponseBasicUserDto } from "src/users/dto/response-basic-user.dto";
 import { Role } from "../entities/role.entity";
 
-export class ResponseRoleDto {
-    @IsUUID()
-    uuid: string;
-    
-    @Length(1, 31)
-    name: string;
-
+export class ResponseRoleDto extends ResourceDto {
     @IsArray()
     users: ResponseBasicUserDto[];
 
-    constructor(uuid: string, name: string, users: ResponseBasicUserDto[]) {
-        this.uuid = uuid;
-        this.name = name;
+    constructor(uuid: string, name: string, description: string, users: ResponseBasicUserDto[]) {
+        super(uuid, name, description)
         this.users = users;
     }
 
     static fromRole(role: Role): ResponseRoleDto {
         const users = role.users?.map(user => ResponseBasicUserDto.fromUser(user)) || [];
-        return new ResponseRoleDto(role.uuid, role.name, users);
+        return new ResponseRoleDto(role.uuid, role.name, role.description, users);
     }
 }

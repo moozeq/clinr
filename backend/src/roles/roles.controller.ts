@@ -3,6 +3,7 @@ import { RolesService } from './roles.service';
 import { AssociateRoleDto } from './dto/associate-role.dto';
 import { ResponseRoleDto } from './dto/response-role.dto';
 import { DissolveRoleDto } from './dto/dissolve-role.dto';
+import { SeqScope } from 'src/utils';
 
 @Controller('roles')
 export class RolesController {
@@ -21,16 +22,17 @@ export class RolesController {
   @Get()
   async find(@Query('name') name: string, @Query('includeUsers') includeUsers: boolean) {
     if (name) {
-      return this.rolesService.findByName(name, includeUsers)
+      return this.rolesService.findByName(name, includeUsers ? SeqScope.Full : SeqScope.Basic)
         .then((role) => ResponseRoleDto.fromRole(role));
     } else {
-      return this.rolesService.findAll(includeUsers)
+      return this.rolesService.findAll(includeUsers ? SeqScope.Full : SeqScope.Basic)
         .then((roles) => roles.map(role => ResponseRoleDto.fromRole(role)));
     }
   }
 
   @Get(':uuid')
   async findOne(@Param('uuid') uuid: string, @Query('includeUsers') includeUsers: boolean) {
-    return this.rolesService.findOne(uuid, includeUsers).then((role) => ResponseRoleDto.fromRole(role));
+    return this.rolesService.findOne(uuid, includeUsers ? SeqScope.Full : SeqScope.Basic)
+      .then((role) => ResponseRoleDto.fromRole(role));
   }
 }

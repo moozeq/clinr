@@ -1,12 +1,12 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
+import { SeqScope } from 'src/utils';
 import { AssociateRoleDto } from './dto/associate-role.dto';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { DissolveRoleDto } from './dto/dissolve-role.dto';
-import { RoleType } from './entities/role-types.entity';
 import { UserRole } from './entities/role-user.entity';
 import { Role } from './entities/role.entity';
+import { RoleType } from './roles.utils';
 
 @Injectable()
 export class RolesService {
@@ -16,24 +16,19 @@ export class RolesService {
     return Role.create(createRoleDto);
   }
 
-  async findAll(includeUsers: boolean = false): Promise<Role[]> {
-    const includeOptions = includeUsers ? [User] : [];
-    return Role.findAll({ include: includeOptions });
+  async findAll(scope: SeqScope = SeqScope.Basic): Promise<Role[]> {
+    return Role.scope(scope).findAll();
   }
 
-  findOne(uuid: string, includeUsers: boolean = false): Promise<Role | undefined> {
-    const includeOptions = includeUsers ? [User] : [];
-    return Role.findOne({
-      where: { uuid: uuid },
-      include: includeOptions
+  findOne(uuid: string, scope: SeqScope = SeqScope.Basic): Promise<Role | undefined> {
+    return Role.scope(scope).findOne({
+      where: { uuid: uuid }
     });
   }
 
-  findByName(name: string, includeUsers: boolean = false): Promise<Role | undefined> {
-    const includeOptions = includeUsers ? [User] : [];
-    return Role.findOne({
-      where: { name: name },
-      include: includeOptions
+  findByName(name: string, scope: SeqScope = SeqScope.Basic): Promise<Role | undefined> {
+    return Role.scope(scope).findOne({
+      where: { name: name }
     });
   }
 
@@ -47,7 +42,7 @@ export class RolesService {
     return Promise.all(
       [
         this.usersService.findOne(associateRole.userUuid),
-        Role.findOne({ where: { uuid: associateRole.roleUuid } })
+        this.findOne(associateRole.roleUuid)
       ]).then(([user, role]) => {
         if (!user || !role) {
           throw new NotFoundException('Invalid user or role!');
@@ -59,8 +54,8 @@ export class RolesService {
   async dissolve(dissolveRole: DissolveRoleDto): Promise<number> {
     return Promise.all(
       [
-        this.usersService.findOne(dissolveRole.userUuid),
-        Role.findOne({ where: { uuid: dissolveRole.roleUuid } })
+        this.usersService.findOne(dissolveRole.userUuid, SeqScope.Full),
+        this.findOne(dissolveRole.roleUuid)
       ]).then(([user, role]) => {
         if (!user || !role) {
           throw new NotFoundException('Invalid user or role!');

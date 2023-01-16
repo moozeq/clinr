@@ -1,10 +1,8 @@
-import { IsArray, IsEmail, IsUUID, Length } from "class-validator";
+import { IsEmail, Length } from "class-validator";
+import { ResourceDto } from "src/resource/dto/resource.dto";
 import { User } from "../entities/user.entity";
 
-export class ResponseBasicUserDto {
-    @IsUUID()
-    uuid: string;
-
+export class ResponseBasicUserDto extends ResourceDto {
     @Length(1, 31)
     username: string;
 
@@ -12,17 +10,13 @@ export class ResponseBasicUserDto {
     @Length(3, 255)
     email: string;
 
-    @Length(1, 63)
-    name: string;
-
-    constructor(uuid: string, username: string, email: string, name: string) {
-        this.uuid = uuid;
+    constructor(uuid: string, name: string, description: string, username: string, email: string) {
+        super(uuid, name, description);
         this.username = username;
         this.email = email;
-        this.name = name;
     }
 
     static fromUser(user: User): ResponseBasicUserDto {
-        return new ResponseBasicUserDto(user.uuid, user.username, user.email, user.name);
+        return new ResponseBasicUserDto(user.uuid, user.name, user.description, user.username, user.email);
     }
 }

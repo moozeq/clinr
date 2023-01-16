@@ -6,9 +6,9 @@ import { Role } from "./role.entity";
 export class UserRole extends Model<UserRole> {
     @ForeignKey(() => User)
     @Column
-    userId: number;
+    userId!: number;
 
     @ForeignKey(() => Role)
     @Column
-    roleId: number
+    roleId!: number
 }

@@ -1,51 +1,32 @@
-import { UUIDV4 } from "sequelize";
-import { Column, CreatedAt, Default, Index, IsEmail, IsUUID, Length, Table, Unique, UpdatedAt, DeletedAt, BelongsToMany, Model, AllowNull } from "sequelize-typescript";
+import { AllowNull, BelongsToMany, Column, IsEmail, Length, Scopes, Table } from "sequelize-typescript";
+import { Resource } from "src/resource/entities/resource.entity";
+import { getTableResourceOptions } from "src/resource/resource.utils";
 import { User } from "src/users/entities/user.entity";
+import { SeqScope } from "src/utils";
 import { UserFacility } from "./user-facility.entity";
 
-@Table
-export class Facility extends Model<Facility> {
-    @IsUUID(4)
-    @Unique
-    @Index
-    @Default(UUIDV4)
-    @Column('VARCHAR(36)')
-    uuid: string;
-
-    @Length({ min: 1, max: 255 })
-    @Unique
-    @Index
-    @Column('VARCHAR(255)')
-    name: string;
-
-    @Length({ max: 1023 })
-    @Column('VARCHAR(1023)')
-    description: string;
-
+@Scopes(() => ({
+    [SeqScope.Full]: {
+        include: [User],
+    }
+}))
+@Table(getTableResourceOptions('facilities'))
+export class Facility extends Resource<Facility> {
     @Length({ min: 1, max: 255 })
     @Column('VARCHAR(255)')
-    address: string;
+    address!: string;
 
     @IsEmail
     @AllowNull
     @Length({ min: 3, max: 255 })
     @Column('VARCHAR(255)')
-    email: string;
+    email?: string;
 
     @AllowNull
     @Length({ min: 1, max: 15 })
     @Column('VARCHAR(15)')
-    telephone: string;
+    telephone?: string;
 
-    @BelongsToMany(() => User, { as: 'doctors', through: () => UserFacility })
-    doctors: User[];
-
-    @CreatedAt
-    createdAt: Date;
-
-    @UpdatedAt
-    updatedAt: Date;
-
-    @DeletedAt
-    archiveDate: Date;
+    @BelongsToMany(() => User, () => UserFacility)
+    doctors?: User[];
 }
