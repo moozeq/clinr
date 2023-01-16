@@ -2,6 +2,7 @@ import { BelongsToMany, Column, Index, IsEmail, Length, Scopes, Table, Unique } 
 import { Facility } from "src/facilities/entities/facility.entity";
 import { UserFacility } from "src/facilities/entities/user-facility.entity";
 import { Resource } from "src/resource/entities/resource.entity";
+import { getTableResourceOptions } from "src/resource/resource.utils";
 import { UserRole } from "src/roles/entities/role-user.entity";
 import { Role } from "src/roles/entities/role.entity";
 import { SeqScope } from "src/utils";
@@ -11,7 +12,7 @@ import { SeqScope } from "src/utils";
         include: [Role, Facility],
     }
 }))
-@Table
+@Table(getTableResourceOptions('users'))
 export class User extends Resource<User> {
     @Unique
     @Index
