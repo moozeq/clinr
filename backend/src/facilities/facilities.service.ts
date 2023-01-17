@@ -16,11 +16,11 @@ export class FacilitiesService {
     return Facility.create(createFacilityDto);
   }
 
-  findAll(scope: SeqScope = SeqScope.Basic) {
+  findAll(scope: SeqScope = SeqScope.Default) {
     return Facility.scope(scope).findAll();
   }
 
-  findOne(uuid: string, scope: SeqScope = SeqScope.Basic) {
+  findOne(uuid: string, scope: SeqScope = SeqScope.Default) {
     return Facility.scope(scope).findOne({
       where: { uuid: uuid }
     });

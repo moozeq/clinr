@@ -21,13 +21,13 @@ export class FacilitiesController {
 
   @Get()
   async findAll(@Query('includeDoctors') includeDoctors: boolean) {
-    return this.facilitiesService.findAll(includeDoctors ? SeqScope.Full : SeqScope.Basic)
-      .then((facilities) => facilities.map(facility => ResponseFacilityDto.fromFacility(facility)));
+    return this.facilitiesService.findAll(includeDoctors ? SeqScope.Full : SeqScope.Default)
+      .then((facilities) => facilities.map((facility) => ResponseFacilityDto.fromFacility(facility)));
   }
 
   @Get(':uuid')
   async findOne(@Param('uuid') uuid: string, @Query('includeDoctors') includeDoctors: boolean) {
-    return this.facilitiesService.findOne(uuid, includeDoctors ? SeqScope.Full : SeqScope.Basic)
+    return this.facilitiesService.findOne(uuid, includeDoctors ? SeqScope.Full : SeqScope.Default)
       .then((facility) => ResponseFacilityDto.fromFacility(facility));
   }
 }

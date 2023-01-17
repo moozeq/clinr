@@ -17,17 +17,17 @@ export class UsersService {
     return User.create(createUserDto);
   }
 
-  findAll(scope: SeqScope = SeqScope.Basic): Promise<User[]> {
+  findAll(scope: SeqScope = SeqScope.Default): Promise<User[]> {
     return User.scope(scope).findAll();
   }
 
-  findOne(uuid: string, scope: SeqScope = SeqScope.Basic): Promise<User | undefined> {
+  findOne(uuid: string, scope: SeqScope = SeqScope.Default): Promise<User | undefined> {
     return User.scope(scope).findOne({
       where: { uuid: uuid }
     });
   }
 
-  findByUsername(username: string, scope: SeqScope = SeqScope.Basic): Promise<User | undefined> {
+  findByUsername(username: string, scope: SeqScope = SeqScope.Default): Promise<User | undefined> {
     return User.scope(scope).findOne({
       where: { username: username }
     });
