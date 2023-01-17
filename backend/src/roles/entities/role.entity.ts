@@ -7,7 +7,7 @@ import { UserRole } from "./role-user.entity";
 
 @Scopes(() => ({
     [SeqScope.Full]: {
-        include: [User],
+        include: [User.scope(SeqScope.Default)],
     }
 }))
 @Table(getTableResourceOptions('roles'))

@@ -7,28 +7,26 @@ import { DbFile } from './entities/db-file.entity';
 @Injectable()
 export class DbFilesService {
   create(createDbFileDto: CreateDbFileDto) {
-    return DbFile.create(createDbFileDto)
+    return DbFile.create(createDbFileDto);
   }
 
   findAll(scope: SeqScope = SeqScope.Default) {
-    return DbFile.scope(scope).findAll()
+    return DbFile.scope(scope).findAll();
   }
 
   findOne(uuid: string, scope: SeqScope = SeqScope.Default) {
-    return DbFile.scope(scope).findOne({
-      where: { uuid: uuid }
-    })
+    return DbFile.scope(scope).findByPk(uuid);
   }
 
   update(uuid: string, updateDbFileDto: UpdateDbFileDto) {
     return DbFile.update(updateDbFileDto, {
       where: { uuid: uuid }
-    })
+    });
   }
 
   remove(uuid: string) {
     return DbFile.destroy({
       where: { uuid: uuid }
-    })
+    });
   }
 }

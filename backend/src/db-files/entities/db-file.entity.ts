@@ -1,4 +1,5 @@
-import { Column, Length, Scopes, Table } from "sequelize-typescript";
+import { BelongsTo, Column, ForeignKey, HasMany, HasOne, Length, Scopes, Table } from "sequelize-typescript";
+import { Protocol } from "src/protocols/entities/protocol.entity";
 import { Resource } from "src/resource/entities/resource.entity";
 import { getTableResourceOptions } from "src/resource/resource.utils";
 import { SeqScope } from "src/utils";
@@ -23,4 +24,7 @@ export class DbFile extends Resource<DbFile> {
 
     @Column
     content!: Buffer;
+
+    @HasOne(() => Protocol)
+    protocol?: Protocol;
 }

@@ -7,7 +7,7 @@ import { UserFacility } from "./user-facility.entity";
 
 @Scopes(() => ({
     [SeqScope.Full]: {
-        include: [User],
+        include: [User.scope(SeqScope.Default)],
     }
 }))
 @Table(getTableResourceOptions('facilities'))

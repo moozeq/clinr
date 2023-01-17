@@ -15,7 +15,7 @@ export class DbFilesController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async create(@UploadedFile() file: Express.Multer.File, @Body() createResourceDto: CreateResourceDto) {
-    const createDbFileDto = new CreateDbFileDto(file, createResourceDto);
+    const createDbFileDto = CreateDbFileDto.fromFile(file, createResourceDto);
     return this.dbFilesService.create(createDbFileDto)
       .then((file) => ResponseDbFileDto.fromDbFile(file, true));
   }
@@ -23,7 +23,7 @@ export class DbFilesController {
   @Get()
   async findAll() {
     return this.dbFilesService.findAll()
-      .then(files => files.map((file) => ResponseDbFileDto.fromDbFile(file, true)));
+      .then((files) => files.map((file) => ResponseDbFileDto.fromDbFile(file, true)));
   }
 
   @Get(':uuid')
@@ -37,13 +37,13 @@ export class DbFilesController {
     return this.dbFilesService.findOne(uuid, SeqScope.Full)
       .then((file) => {
         if (!file) {
-          throw new NotFoundException('Wrong file!')
+          throw new NotFoundException('Wrong file!');
         }
         // TODO: We should secure filename before injecting it in the header.
         response.set({
           'Content-Type': file.mimeType,
           'Content-Disposition': `attachment; filename="${file.filename}"`
-        })
+        });
 
         return new StreamableFile(file.content);
       });
