@@ -1,4 +1,4 @@
 export enum SeqScope {
-    Full = 'full',
-    Basic = '',
+    Default = 'defaultScope',
+    Full = 'fullScope',
 }

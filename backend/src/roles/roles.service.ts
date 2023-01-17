@@ -16,17 +16,17 @@ export class RolesService {
     return Role.create(createRoleDto);
   }
 
-  async findAll(scope: SeqScope = SeqScope.Basic): Promise<Role[]> {
+  async findAll(scope: SeqScope = SeqScope.Default): Promise<Role[]> {
     return Role.scope(scope).findAll();
   }
 
-  findOne(uuid: string, scope: SeqScope = SeqScope.Basic): Promise<Role | undefined> {
+  findOne(uuid: string, scope: SeqScope = SeqScope.Default): Promise<Role | undefined> {
     return Role.scope(scope).findOne({
       where: { uuid: uuid }
     });
   }
 
-  findByName(name: string, scope: SeqScope = SeqScope.Basic): Promise<Role | undefined> {
+  findByName(name: string, scope: SeqScope = SeqScope.Default): Promise<Role | undefined> {
     return Role.scope(scope).findOne({
       where: { name: name }
     });

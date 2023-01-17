@@ -22,17 +22,17 @@ export class RolesController {
   @Get()
   async find(@Query('name') name: string, @Query('includeUsers') includeUsers: boolean) {
     if (name) {
-      return this.rolesService.findByName(name, includeUsers ? SeqScope.Full : SeqScope.Basic)
+      return this.rolesService.findByName(name, includeUsers ? SeqScope.Full : SeqScope.Default)
         .then((role) => ResponseRoleDto.fromRole(role));
     } else {
-      return this.rolesService.findAll(includeUsers ? SeqScope.Full : SeqScope.Basic)
+      return this.rolesService.findAll(includeUsers ? SeqScope.Full : SeqScope.Default)
         .then((roles) => roles.map(role => ResponseRoleDto.fromRole(role)));
     }
   }
 
   @Get(':uuid')
   async findOne(@Param('uuid') uuid: string, @Query('includeUsers') includeUsers: boolean) {
-    return this.rolesService.findOne(uuid, includeUsers ? SeqScope.Full : SeqScope.Basic)
+    return this.rolesService.findOne(uuid, includeUsers ? SeqScope.Full : SeqScope.Default)
       .then((role) => ResponseRoleDto.fromRole(role));
   }
 }
