@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoggedUserDto, LoginUserDto } from './dto/user.dto';
-import { TokenStorageService } from './token-storage.service';
+import { TokenStorageService } from './auth/token-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +9,7 @@ import { TokenStorageService } from './token-storage.service';
 export class AppComponent implements OnInit {
   title: string = 'ClinR';
   isLoggedIn = false;
-  user!: LoggedUserDto;
+  user!: any;
 
   constructor(private tokenStorage: TokenStorageService) { }
 

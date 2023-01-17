@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LoggedUserDto } from '../dto/user.dto';
-import { TokenStorageService } from '../token-storage.service';
+import { TokenStorageService } from 'src/app/auth/token-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +7,7 @@ import { TokenStorageService } from '../token-storage.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  @Input() user!: LoggedUserDto;
+  @Input() user!: any;
 
   constructor(private tokenStorage: TokenStorageService) { }
 
