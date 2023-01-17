@@ -7,13 +7,19 @@ export class ResponseRoleDto extends ResourceDto {
     @IsArray()
     users: ResponseBasicUserDto[];
 
-    constructor(uuid: string, name: string, description: string, users: ResponseBasicUserDto[]) {
-        super(uuid, name, description)
+    constructor(uuid: string, name: string, description: string, meta: any, users: ResponseBasicUserDto[]) {
+        super(uuid, name, description, meta)
         this.users = users;
     }
 
     static fromRole(role: Role): ResponseRoleDto {
         const users = role.users?.map(user => ResponseBasicUserDto.fromUser(user)) || [];
-        return new ResponseRoleDto(role.uuid, role.name, role.description, users);
+        return new ResponseRoleDto(
+            role.uuid,
+            role.name,
+            role.description,
+            role.meta,
+            users
+        );
     }
 }

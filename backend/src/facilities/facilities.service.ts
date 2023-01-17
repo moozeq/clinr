@@ -6,7 +6,6 @@ import { AssignDoctorDto } from './dto/assign-doctor.dto';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { DismissDoctorDto } from './dto/dismiss-doctor.dto';
 import { Facility } from './entities/facility.entity';
-import { UserFacility } from './entities/user-facility.entity';
 
 @Injectable()
 export class FacilitiesService {
@@ -21,9 +20,7 @@ export class FacilitiesService {
   }
 
   findOne(uuid: string, scope: SeqScope = SeqScope.Default) {
-    return Facility.scope(scope).findOne({
-      where: { uuid: uuid }
-    });
+    return Facility.scope(scope).findByPk(uuid);
   }
 
   remove(uuid: string) {
@@ -32,7 +29,7 @@ export class FacilitiesService {
     });
   }
 
-  async assignDoctor(assignDoctor: AssignDoctorDto): Promise<UserFacility> {
+  async assignDoctor(assignDoctor: AssignDoctorDto): Promise<any> {
     return Promise.all(
       [
         this.usersService.findOne(assignDoctor.userUuid, SeqScope.Full),
@@ -44,11 +41,11 @@ export class FacilitiesService {
         if (!user.roles.some((role) => role.name === RoleType.Doctor)) {
           throw new BadRequestException('User should have a doctor role!');
         }
-        return UserFacility.create({ userId: user.id, facilityId: facility.id });
+        return facility.$add('doctors', user);
       })
   }
 
-  async dismissDoctor(dismissDoctor: DismissDoctorDto): Promise<number> {
+  async dismissDoctor(dismissDoctor: DismissDoctorDto): Promise<any> {
     return Promise.all(
       [
         this.usersService.findOne(dismissDoctor.userUuid),
@@ -57,7 +54,7 @@ export class FacilitiesService {
         if (!user || !facility) {
           throw new NotFoundException('Invalid user or facility!');
         }
-        return UserFacility.destroy({ where: { userId: user.id, facilityId: facility.id } });
+        return facility.$remove('doctors', user);
       })
   }
 }

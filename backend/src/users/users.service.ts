@@ -22,9 +22,7 @@ export class UsersService {
   }
 
   findOne(uuid: string, scope: SeqScope = SeqScope.Default): Promise<User | undefined> {
-    return User.scope(scope).findOne({
-      where: { uuid: uuid }
-    });
+    return User.scope(scope).findByPk(uuid);
   }
 
   findByUsername(username: string, scope: SeqScope = SeqScope.Default): Promise<User | undefined> {

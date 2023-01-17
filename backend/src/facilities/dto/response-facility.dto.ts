@@ -18,8 +18,8 @@ export class ResponseFacilityDto extends ResourceDto {
     @IsArray()
     doctors?: ResponseBasicUserDto[];
 
-    constructor(uuid: string, name: string, description: string, address: string, email: string, telephone: string, doctors: ResponseBasicUserDto[]) {
-        super(uuid, name, description);
+    constructor(uuid: string, name: string, description: string, meta: any, address: string, email: string, telephone: string, doctors: ResponseBasicUserDto[]) {
+        super(uuid, name, description, meta);
         this.address = address;
         this.email = email;
         this.telephone = telephone;
@@ -32,6 +32,7 @@ export class ResponseFacilityDto extends ResourceDto {
             facility.uuid,
             facility.name,
             facility.description,
+            facility.meta,
             facility.address,
             facility.email,
             facility.telephone,

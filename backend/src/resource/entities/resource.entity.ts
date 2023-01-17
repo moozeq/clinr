@@ -1,15 +1,14 @@
 import { UUIDV4 } from "sequelize";
-import { AllowNull, Column, Default, IsUUID, Length, Model, Unique } from "sequelize-typescript";
+import { AllowNull, Column, DataType, Default, IsUUID, Length, Model, PrimaryKey, Unique } from "sequelize-typescript";
 
 export class Resource<T> extends Model<T> {
+    @PrimaryKey
     @IsUUID(4)
-    @Unique
     @Default(UUIDV4)
     @Column('VARCHAR(36)')
     readonly uuid!: string;
 
     @Length({ min: 1, max: 255 })
-    @Unique
     @Column('VARCHAR(255)')
     name!: string;
 
@@ -17,4 +16,8 @@ export class Resource<T> extends Model<T> {
     @Length({ max: 1023 })
     @Column('VARCHAR(1023)')
     description?: string;
+
+    @Default({})
+    @Column(DataType.JSONB)
+    meta?: any;
 }

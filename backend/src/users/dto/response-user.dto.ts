@@ -9,8 +9,8 @@ export class ResponseUserDto extends ResponseBasicUserDto {
     @IsArray()
     facilities: string[];
 
-    constructor(uuid: string, name: string, description: string, username: string, email: string, roles: string[], facilities: string[]) {
-        super(uuid, name, description, username, email);
+    constructor(uuid: string, name: string, description: string, meta: any, username: string, email: string, roles: string[], facilities: string[]) {
+        super(uuid, name, description, meta, username, email);
         this.roles = roles;
         this.facilities = facilities;
     }
@@ -18,6 +18,15 @@ export class ResponseUserDto extends ResponseBasicUserDto {
     static fromUser(user: User): ResponseUserDto {
         const roles = user.roles?.map(role => role.name) || [];
         const facilities = user.facilities?.map(facility => facility.name) || [];
-        return new ResponseUserDto(user.uuid, user.name, user.description, user.username, user.email, roles, facilities);
+        return new ResponseUserDto(
+            user.uuid,
+            user.name,
+            user.description,
+            user.meta,
+            user.username,
+            user.email,
+            roles,
+            facilities
+        );
     }
 }

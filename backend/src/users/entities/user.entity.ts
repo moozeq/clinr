@@ -9,7 +9,7 @@ import { SeqScope } from "src/utils";
 
 @Scopes(() => ({
     [SeqScope.Full]: {
-        include: [Role, Facility],
+        include: [Role.scope(SeqScope.Default), Facility.scope(SeqScope.Default)],
     }
 }))
 @Table(getTableResourceOptions('users'))

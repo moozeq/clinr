@@ -4,7 +4,6 @@ import { SeqScope } from 'src/utils';
 import { AssociateRoleDto } from './dto/associate-role.dto';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { DissolveRoleDto } from './dto/dissolve-role.dto';
-import { UserRole } from './entities/role-user.entity';
 import { Role } from './entities/role.entity';
 import { RoleType } from './roles.utils';
 
@@ -21,9 +20,7 @@ export class RolesService {
   }
 
   findOne(uuid: string, scope: SeqScope = SeqScope.Default): Promise<Role | undefined> {
-    return Role.scope(scope).findOne({
-      where: { uuid: uuid }
-    });
+    return Role.scope(scope).findByPk(uuid);
   }
 
   findByName(name: string, scope: SeqScope = SeqScope.Default): Promise<Role | undefined> {
@@ -38,7 +35,7 @@ export class RolesService {
     });
   }
 
-  async associate(associateRole: AssociateRoleDto): Promise<UserRole> {
+  async associate(associateRole: AssociateRoleDto): Promise<any> {
     return Promise.all(
       [
         this.usersService.findOne(associateRole.userUuid),
@@ -47,11 +44,11 @@ export class RolesService {
         if (!user || !role) {
           throw new NotFoundException('Invalid user or role!');
         }
-        return UserRole.create({ userId: user.id, roleId: role.id });
+        return user.$add('role', role);
       })
   }
 
-  async dissolve(dissolveRole: DissolveRoleDto): Promise<number> {
+  async dissolve(dissolveRole: DissolveRoleDto): Promise<any> {
     return Promise.all(
       [
         this.usersService.findOne(dissolveRole.userUuid, SeqScope.Full),
@@ -64,7 +61,7 @@ export class RolesService {
         if (role.name === RoleType.Doctor && user.facilities.length > 0) {
           throw new BadRequestException(`User is a ${role.name} assigned to facilities, role "${role.name}" can not be removed!`);
         }
-        return UserRole.destroy({ where: { userId: user.id, roleId: role.id } });
+        return user.$remove('role', role);
       })
   }
 }

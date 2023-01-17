@@ -6,9 +6,9 @@ import { Facility } from "./facility.entity";
 export class UserFacility extends Model<UserFacility> {
     @ForeignKey(() => User)
     @Column
-    userId!: number;
+    userUuid!: string;
 
     @ForeignKey(() => Facility)
     @Column
-    facilityId!: number
+    facilityUuid!: string
 }
