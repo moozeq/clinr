@@ -6,4 +6,12 @@ export class CreateDbFileDto extends CreateResourceDto {
     filename!: string;
 
     content!: Buffer;
+
+    constructor(file: Express.Multer.File, createResourceDto: CreateResourceDto) {
+        super();
+        this.name = createResourceDto.name;
+        this.description = createResourceDto.description;
+        this.filename = file.originalname;
+        this.content = file.buffer;
+    }
 }
