@@ -1,0 +1,9 @@
+import { Length } from "class-validator";
+import { CreateResourceDto } from "src/resource/dto/create-resource.dto";
+
+export class CreateDbFileDto extends CreateResourceDto {
+    @Length(1, 255)
+    filename!: string;
+
+    content!: Buffer;
+}
