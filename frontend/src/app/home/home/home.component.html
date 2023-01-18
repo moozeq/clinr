@@ -7,6 +7,11 @@
         <span class="visually-hidden"></span>
     </div>
     <div *ngIf="!loading" class="form-floating mb-3 w-25 text-center">
-        <p>Hello! You are logged in as {{ user.username }}</p>
+        <p>Hello! You are logged in as "{{ user.username }}" with following roles:</p>
+        <div>
+            <ul class="text-start" *ngFor="let role of user.roles">
+                <li>{{ role }}</li>
+            </ul>
+        </div>
     </div>
 </div>

@@ -22,9 +22,9 @@ export class HomeComponent implements OnInit {
     this.authService.isLogged.subscribe(logged => {
       this.logged = logged;
       if (logged) {
-        this.usersService.getUserProfile().subscribe(() => {
+        this.usersService.getCurrentUser().subscribe((user) => {
           this.loading = false;
-          this.user = this.usersService.user;
+          this.user = user;
         })
       }
     });
