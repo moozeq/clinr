@@ -2,7 +2,7 @@
 name: Feature
 about: New feature or improvement that should be implemented
 title: ''
-labels: T1 - Improvement
+labels: ''
 assignees: ''
 
 ---
