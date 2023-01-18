@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { LoggedUser, LoggedUserDto } from './dto/user.dto';
+import { AuthModule } from './auth.module';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: AuthModule
 })
 export class TokenStorageService {
   private authTokenKey = 'auth-token';
@@ -11,27 +11,32 @@ export class TokenStorageService {
 
   constructor() { }
 
-  signOut(): void {
+  removeUserAndToken(): void {
     this.storage.removeItem(this.authTokenKey);
     this.storage.removeItem(this.authUserKey);
   }
 
-  saveToken(token: string): void {
+  saveUserAndToken(authResponse: any): void {
+    this.saveToken(authResponse.accessToken);
+    this.saveUser(authResponse.user);
+  }
+
+  saveToken(token: any): void {
     this.storage.setItem(this.authTokenKey, token);
   }
 
-  getToken(): string | null {
+  getToken(): any {
     return this.storage.getItem(this.authTokenKey);
   }
 
-  saveUser(user: LoggedUser): void {
+  saveUser(user: any): void {
     this.storage.setItem(this.authUserKey, JSON.stringify(user));
   }
 
-  getUser(): LoggedUser | null {
+  getUser(): any {
     const user = this.storage.getItem(this.authUserKey);
     if (user) {
-      return new LoggedUser(JSON.parse(user) as LoggedUserDto);
+      return JSON.parse(user);
     }
     return null;
   }

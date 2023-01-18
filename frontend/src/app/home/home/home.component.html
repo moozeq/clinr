@@ -1,0 +1,17 @@
+<app-navbar></app-navbar>
+<div class="container home-container d-flex flex-column align-items-center">
+    <h1 class="mb-3 text-primary">
+        Clin-R
+    </h1>
+    <div *ngIf="loading" class="spinner-border" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+    <div *ngIf="!loading" class="form-floating mb-3 w-25 text-center">
+        <p>Hello! You are logged in as "{{ user.username }}" with following roles:</p>
+        <div>
+            <ul class="text-start" *ngFor="let role of user.roles">
+                <li>{{ role }}</li>
+            </ul>
+        </div>
+    </div>
+</div>

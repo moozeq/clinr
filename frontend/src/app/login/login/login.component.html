@@ -1,0 +1,19 @@
+<div class="container login-container d-flex flex-column align-items-center">
+    <h1 class="mb-3 text-primary">
+        Clin-R
+    </h1>
+    <form class="form-floating mb-3" [formGroup]="userForm" (ngSubmit)="login()">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="userId" formControlName="userId" placeholder="name@example.com"
+                required>
+            <label for="userId" class="form-label">Username or email address</label>
+        </div>
+        <div class="form-floating mb-3 w-100">
+            <input type="password" class="form-control" id="password" formControlName="password" placeholder="password"
+                required>
+            <label for="password" class="form-label">Password</label>
+        </div>
+        <button type="submit" class="btn btn-primary w-100" [disabled]="!userForm.valid">Sign in</button>
+    </form>
+    <p class="fs-6">Don't have an account? <a href="/register" routerLink="/register">Sign up</a></p>
+</div>

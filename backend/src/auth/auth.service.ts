@@ -1,16 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import bcrypt from "bcrypt";
-import { User } from 'src/users/entities/user.entity';
-import { JwtService } from '@nestjs/jwt'
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { ResponseUserDto } from 'src/users/dto/response-user.dto';
+import { User } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
     constructor(private usersService: UsersService, private jwtService: JwtService) { }
 
-    async validateUser(username: string, password: string): Promise<User | null> {
-        const user = await this.usersService.findByUsername(username);
+    async validateUser(userId: string, password: string): Promise<User | null> {
+        const user = await this.usersService.findByUserId(userId);
         if (user && bcrypt.compareSync(password, user.password)) {
             return user;
         }
@@ -23,5 +24,14 @@ export class AuthService {
             user: ResponseUserDto.fromUser(user),
             accessToken: this.jwtService.sign(payload)
         }
+    }
+
+    async register(createUserDto: CreateUserDto) {
+        return this.usersService.create(createUserDto)
+            .then(
+                (user) => { return ResponseUserDto.fromUser(user) })
+            .catch((e) => {
+                throw new BadRequestException(e);
+            });
     }
 }
