@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthModule } from '../auth/auth.module';
-import { LoginComponent } from './login/login.component';
+import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AuthModule } from '../auth/auth.module';
+import { ToastsModule } from '../toasts/toasts.module';
+import { LoginComponent } from './login/login.component';
 
 
 
@@ -15,7 +15,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     CommonModule,
     AuthModule,
     ReactiveFormsModule,
-    FontAwesomeModule,
+    ToastsModule,
   ],
   exports: [
     LoginComponent,

@@ -1,0 +1,29 @@
+<div class="container register-container d-flex flex-column align-items-center">
+    <h1 class="mb-3 text-primary">
+        Clin-R
+    </h1>
+    <form class="form-floating mb-3" [formGroup]="userForm" (ngSubmit)="register()">
+        <div class="form-floating mb-3 w-100">
+            <input type="text" class="form-control" id="name" formControlName="name" placeholder="name" maxlength="255"
+                required>
+            <label for="name" class="form-label">Name</label>
+        </div>
+        <div class="form-floating mb-3 w-100">
+            <input type="text" class="form-control" id="username" formControlName="username" placeholder="username"
+                maxlength="32" required>
+            <label for="username" class="form-label">Username</label>
+        </div>
+        <div class="form-floating mb-3 w-100">
+            <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com"
+                maxlength="255" required>
+            <label for="email" class="form-label">Email</label>
+        </div>
+        <div class="form-floating mb-3 w-100">
+            <input type="password" class="form-control" id="password" formControlName="password" placeholder="password"
+                required>
+            <label for="password" class="form-label">Password</label>
+        </div>
+        <button type="submit" class="btn btn-primary w-100" [disabled]="!userForm.valid">Sign up</button>
+    </form>
+    <p class="fs-6">Already have an account? <a href="/login" routerLink="/login">Sign in</a></p>
+</div>

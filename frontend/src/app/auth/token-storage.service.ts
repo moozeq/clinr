@@ -11,16 +11,21 @@ export class TokenStorageService {
 
   constructor() { }
 
-  signOut(): void {
+  removeUserAndToken(): void {
     this.storage.removeItem(this.authTokenKey);
     this.storage.removeItem(this.authUserKey);
   }
 
-  saveToken(token: string): void {
+  saveUserAndToken(authResponse: any): void {
+    this.saveToken(authResponse.accessToken);
+    this.saveUser(authResponse.user);
+  }
+
+  saveToken(token: any): void {
     this.storage.setItem(this.authTokenKey, token);
   }
 
-  getToken(): string | null {
+  getToken(): any {
     return this.storage.getItem(this.authTokenKey);
   }
 
